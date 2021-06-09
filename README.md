@@ -33,8 +33,12 @@ manage.py
 
 ![스크린샷 2021-06-09 오후 8 57 22](https://user-images.githubusercontent.com/80886445/121350172-4c111580-c965-11eb-814e-00062ef2e1d4.png)
 
-start.py 수정 (_레포에 스크래핑 샘플 폴더에 제가 구현해 놓았던 main.py 파일을 이름을 바꾸고 안에 로직을 추가했습니다)
+start.py 파일 수정 (_레포에 스크래핑 샘플 폴더에 제가 구현해 놓았던 main.py 파일을 이름을 바꾸고 안에 로직을 추가했습니다)
 
-inflearn_save.py 추가 (inflearn.py 파일에서 스크랩 후 최종으로 리턴된 리스트를 넘겨받아 DB에 저장하는 파일입니다)
+inflearn_save.py 파일 추가 (inflearn.py 파일에서 스크랩 후 최종으로 리턴된 리스트를 넘겨받아 DB에 저장하는 파일입니다)
+
+# 실행 방법
+start.py 파일을 실행하거나, 터미널에서 python start.py 를 입력하여 실행합니다 
+
 
 
