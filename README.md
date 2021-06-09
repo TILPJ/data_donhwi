@@ -12,7 +12,7 @@ python-dotenv로 환경변수를 분리해서 관리(secret_key, database 정보
 # (6/9) 수정한 부분
 conf > settings.py 
 - import os 추가
-- secret key
+- secret key 부분 수정 
 - installed_apps 부분을 django_apps와 project_apps로 구분함 
 - time_zone을 Asia/Seoul로 변경 
 - 그 외 동일 
