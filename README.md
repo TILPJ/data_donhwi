@@ -29,7 +29,7 @@ clipper > models.py
 manage.py 
 - python-dotenv로 분리한 .env 파일을 불러오기 위한 로직 추가 
 
-.env 파일 추가 
+.env 파일 추가 (secret key와 db 정보가 들어있습니다)
 
 ![스크린샷 2021-06-09 오후 8 57 22](https://user-images.githubusercontent.com/80886445/121350172-4c111580-c965-11eb-814e-00062ef2e1d4.png)
 
