@@ -21,7 +21,7 @@ clipper > admin.py
 - models를 admin 사이트에 등록 
 
 clipper > models.py
-- Site 모델 추가 
+- Site 모델 추가 (site 테이블의 데이터는 admin 페이지에서 밀어넣었습니다)
 - Course 모델에 site foreign 필드 추가 
 - Chapter, Section 모델에서 content -> name으로 필드명 변경
 - Section 모델 name 필드를 Textfield -> CharField로 변경 
