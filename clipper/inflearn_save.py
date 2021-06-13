@@ -1,47 +1,62 @@
 from clipper.models import Site, Course, Chapter, Section
 
 # 섹션 정보 저장
-def section_info_save(chapter_id, section_list):
+def section_info_save(chapter, section_list):
 
     for section in section_list:
-        data = Section(name=section,
-                        chapter_id=chapter_id
-                        )
+        data = Section(id=None,
+                       name=section,
+                       chapter=chapter
+                    )
         data.save()
 
 
 # 챕터 정보 저장
-def chapter_info_save(course_id, chapter_list):
+def chapter_info_save(course, chapter_list):
     
-    for chapter in chapter_list:
-        data = Chapter(name=chapter["chapter"],
-                        course_id=course_id
-                        )
+    for chapter in chapter_list:        
+        data = Chapter(id=None,
+                       name=chapter["chapter"],
+                       course=course
+                    )
         data.save()
         
         section_list = chapter["section_list"]
-        section_info_save(data.id, section_list)
+        section_info_save(data, section_list)
 
 
 # 강의 정보 저장 
-def course_info_save(courses):
-    site_id = Site.objects.get(name__contains='인프런').id
-
+def course_info_save(courses, site):
+    
     for course in courses:
         # data unpacking
-        data = Course(title=course["title"], 
-                        thumbnail_link=course["thumbnail_link"], 
-                        description=course["description"], 
-                        instructor=course["instructor"], 
-                        course_link=course["course_link"], 
-                        site_id=site_id
+        # 기존에 해당 코스가 DB에 저장되어 있는지 파악을 시도하고
+        # 저장되지 않았다면 get함수는 오류를 발생시키므로 (filter는 empty query)
+        # 오류를 캐취하면 DB에 저장하도록 한다.
+        try:
+            crs = Course.objects.get(course_link=course["course_link"])
+        except Exception:
+            data = Course(id=None,
+                          title=course["title"], 
+                          thumbnail_link=course["thumbnail_link"], 
+                          description=course["description"], 
+                          instructor=course["instructor"], 
+                          course_link=course["course_link"], 
+                          site=site
                         )
-        data.save()
+            data.save()
         
-        chapter_list = course["chapter_list"]
-        chapter_info_save(data.id, chapter_list)
+            chapter_list = course["chapter_list"]
+            chapter_info_save(data, chapter_list)
 
     
 # inflean.py 파일에서 스크랩하여 저장한 리스트를 받아서 데이터베이스에 저장
 def save(courses):
-    course_info_save(courses)
+
+    try:
+        site = Site.objects.get(name__contains='인프런')
+    except Exception:
+        site = Site(name='인프런')
+        site.save()
+
+    course_info_save(courses, site)

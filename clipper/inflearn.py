@@ -1,10 +1,14 @@
 import requests
+from requests.compat import urljoin 
 from bs4 import BeautifulSoup
+import time
 
-
+BASE_URL = "https://www.inflearn.com"
+WAIT = 10 # seconds
 # 인프런 > 강의 > 개발/프로그래밍
-URL = "https://www.inflearn.com/courses/it-programming"
+CATEGORY_URL = "/courses/it-programming"
 
+URL = urljoin(BASE_URL, CATEGORY_URL)
 
 # 마지막 페이지 추출
 def get_last_page():
@@ -81,7 +85,7 @@ def extract_course(html):
         instructor = instructor.string
 
     course_link = html.find("a", {"class":"course_card_front"})["href"]
-    course_link = f"https://www.inflearn.com{course_link}"
+    course_link = urljoin(BASE_URL, course_link)
 
     chapter_list = extract_chapter_list(course_link)
 
@@ -104,10 +108,18 @@ def extract_courses(last_page):
     courses_info = []
 
     # for page in range(1, last_page+1):
-    for page in range(1, 2): # 테스트 로직
+    for page in range(1, last_page+1): 
+        
         print(f"=====Scrapping page {page}=====")
-        response = requests.get(f"{URL}?page={page}")
-        soup = BeautifulSoup(response.text, "html.parser")
+        response = requests.get(urljoin(URL, f"?page={page}"))
+        time.sleep(WAIT)
+        
+        # 가급적 속도가 빠른 lxml 파서를 이용한다. 
+        try:
+            soup = BeautifulSoup(response.content, 'lxml')
+        except Exception:
+            soup = BeautifulSoup(response.text, "html.parser")
+        
         # 각 페이지의 모든 강의 추출
         results = soup.find("div", {"class":"courses_card_list_body"}).find_all("div", {"class":"column"})
         
