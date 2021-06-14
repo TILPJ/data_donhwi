@@ -51,12 +51,12 @@ def course_info_save(courses, site):
 
     
 # inflean.py 파일에서 스크랩하여 저장한 리스트를 받아서 데이터베이스에 저장
-def save(courses):
+def save(courses, site_name):
 
     try:
-        site = Site.objects.get(name__contains='인프런')
+        site = Site.objects.get(name__contains=site_name)
     except Exception:
-        site = Site(name='인프런')
+        site = Site(name=site_name)
         site.save()
 
     course_info_save(courses, site)

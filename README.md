@@ -47,7 +47,7 @@ start.py 파일을 실행하거나, 터미널에서 python start.py 를 입력�
 
 
 ---
-# 변경사항(느릿느릿 2021-06-13)
+# 변경 사항(느릿느릿 2021-06-13)
 - start.py -> start_clipper.py   
 cli 명령 예시:
 ```linux
@@ -59,10 +59,14 @@ cli 명령 예시:
 
 - inflearn.py -> clipper/inflearn.py   
 > requests.compat.urljoin 추가함.(url manipulator)
-> URL 분리 
+> URL 분리   
 tested at 2021-06-13 and found some errors like
 ```
 psycopg2.errors.StringDataRightTruncation: value too long for type character varying(200)
 DataError: value too long for type character varying(200)
 ```
 ---
+
+# 변경 사항(느릿느릿 2021-06-14)
+- inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
+- nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
