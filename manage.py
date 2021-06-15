@@ -2,8 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+# .env 설정을 간편하게 적용하기 위한 모듈
 from dotenv import load_dotenv
+
 
 def main():
     """Run administrative tasks."""
@@ -20,5 +21,6 @@ def main():
 
 
 if __name__ == '__main__':
+    # .env 적용
     load_dotenv()
     main()

@@ -46,4 +46,27 @@ inflearn.py 파일은 수정하지 않았습니당
 start.py 파일을 실행하거나, 터미널에서 python start.py 를 입력하여 실행합니다 
 
 
+---
+# 변경 사항(느릿느릿 2021-06-13)
+- start.py -> start_clipper.py   
+cli 명령 예시:
+```linux
+>> python start_clipper.py -n 인프런
+```
+- inflearn_save.py -> clipper/inflearn_save.py   
+> Course 중복 저장 방지
+> Constructor 이용한 DB 저장코드 통일(https://docs.djangoproject.com/en/3.2/topics/db/examples/many_to_one/)
 
+- inflearn.py -> clipper/inflearn.py   
+> requests.compat.urljoin 추가함.(url manipulator)
+> URL 분리   
+tested at 2021-06-13 and found some errors like
+```
+psycopg2.errors.StringDataRightTruncation: value too long for type character varying(200)
+DataError: value too long for type character varying(200)
+```
+---
+
+# 변경 사항(느릿느릿 2021-06-14)
+- inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
+- nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
