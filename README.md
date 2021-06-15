@@ -70,3 +70,7 @@ DataError: value too long for type character varying(200)
 # 변경 사항(느릿느릿 2021-06-14)
 - inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
 - nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
+
+
+# References
+- Xpath cheatsheet : https://devhints.io/xpath#indexing

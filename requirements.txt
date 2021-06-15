@@ -19,6 +19,7 @@ black
 requests
 lxml
 beautifulsoup4==4.6.0
+scrapy
 
 # selenium related packages
 selenium
