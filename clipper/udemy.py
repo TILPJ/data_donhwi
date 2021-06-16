@@ -27,8 +27,10 @@ CATEGORIES = {
 ## 검색조건식 적용 순서
 # 1. 한국어 + 가장 인기 있는
 # 2. 영어 + 가장 인기 있는 + 평가>4.5
-KEYS = [("?lang=ko", "&sort=popularity"),
-        ("?lang=en", "&raring=4.5&sort=popularity")]
+KEYS = [
+    ("?lang=ko", "&sort=popularity"),
+    ("?lang=en", "&rating=4.5&sort=popularity")
+    ]
 
 WAIT = 5 # seconds
 
@@ -55,10 +57,11 @@ def max_window(browser):
 def get_soup_from_page(url, chrome_options, target_xpath='/html', button_xpath=None):
     """
     webpage의 url과 chromedriver의 option항목들을 받아 
-    target 태그 내용물 전체를 soup 객체로 반환하는 메서드.
+    webpage <html> 태그 내용물 전체를 soup 객체로 반환하는 메서드.
     target_xpath는 수집하려는 정보가 담긴 minimal 엘리먼트의 xpath.
     (예: 페이지 전체를 soup에 담으려면 '/html'. 그러나 깊히 안잡히는 경우가
     있을 수 있으므로 가급적 범위를 좁혀 정한다.)
+    브라우저를 천천히 scrolldown하여 숨겨진 엘리먼트들이 화면에 뜨도록 한다.
     button_xpath는 브라우저 윈도우 확장을 명하는 button 엘리먼트의 xpath 스트링값이다.
 
     """
@@ -67,24 +70,39 @@ def get_soup_from_page(url, chrome_options, target_xpath='/html', button_xpath=N
     # 웹페이지의 모든 DOM들이 들어가도록 soup 인스턴스를 생성한다.
     with webdriver.Chrome(options=set_chrome_options()) as browser:
         
+        browser.implicitly_wait(WAIT)        
         browser.get(url)
         max_window(browser)
-        browser.implicitly_wait(WAIT)
-        
+
+        # Get scroll height
+        last_height = browser.execute_script("return document.body.scrollHeight")
+
+        while True:
+            # Scroll down to bottom
+            browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+            # Wait to load page
+            time.sleep(WAIT)
+
+            # Calculate new scroll height and compare with last scroll height
+            new_height = browser.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
+            
         # 펼칠 필요가 있는 경우 버튼을 클릭하여 브라우저를 펼친다.
         if button_xpath:
             try:
                 button = browser.find_element_by_xpath(button_xpath)
-                button.click()
-                max_window(browser)
-                
+                button.click()                
             except Exception:                
-                print("모든 섹션 확장 버튼이 없습니다.")
-        # browser.save_screenshot("course.png")
+                print(".", end="")
+        max_window(browser)
+        browser.save_screenshot("courses.png")
         # 타겟엘리먼트가 있으면 엘리먼트의 innerHTML 정보를 수집한다.
         blank = False
         try:
-            element = browser.find_element_by_xpath(target_xpath)
+            element = browser.find_element_by_xpath(target_xpath)            
         except Exception:
             blank = True
         
@@ -98,11 +116,13 @@ def get_soup_from_page(url, chrome_options, target_xpath='/html', button_xpath=N
             except Exception:
                 soup = BeautifulSoup(html, 'html.parser')
         else:
-            print('Target:Blank')
+            print('Page:Blank')
             soup = None
             
         # browser 세션을 종료하고 브라우저를 닫는다.    
     return soup
+
+
 
 def extract_course(card):
 
@@ -147,7 +167,7 @@ def extract_courses(cards):
 
     for card in cards:
         courses_info.append(extract_course(card))
-        
+        print(",", end="")
         
     return  courses_info
 
@@ -168,7 +188,7 @@ def extract_chapter_list(link):
         title = chapter.find("span", class_=re.compile("title")).get_text(strip=True)
         chapter_list.append({
                     "chapter": title,
-                    "section": section_list
+                    "section_list": section_list
                     })
         
     return chapter_list
@@ -190,7 +210,7 @@ def get_courses():
             number_of_courses = 0
             # 페이지 번호가 10 이하에 올려진 강의들만 추출한다.
             # max_page 최소값을 조정해야 한다.
-            while page >= 0 and page <= min(max_page, 2):                
+            while page >= 0 and page <= min(max_page, 10):                
                 if page:
                     url = urljoin(category_url, key[0] + f"&p={page}" + key[1])
                 else:
@@ -199,11 +219,10 @@ def get_courses():
                     print(f"==={url}===")
 
                 
-                print(page, end=": ")
                 # 이제 soup로 본격적인 스크래이핑 작업에 들어간다.
                 # 원하는 정보가 모두 담긴 최소외각의 xpath는 다음과 같다.
                 target_xpath = '//div[contains(@class,"course-directory--container")]'            
-                soup = get_soup_from_page(url, set_chrome_options, target_xpath)
+                soup = get_soup_from_page(url, chrome_options, target_xpath)
 
                 # 먼저 강의 수에 따라 페이지가 나뉠 수 있으므로 처음 한 번만 체크하고 기록한다.
                 if page == 0:
@@ -213,6 +232,9 @@ def get_courses():
                         number_of_courses = int(re.findall("\d+", number_of_courses.get_text())[0])
                     except Exception:
                         number_of_courses = 0
+
+
+                print(page, end="page: ")
 
                 if number_of_courses > 16:
                     max_page =  number_of_courses // 16 + 1

@@ -5,7 +5,7 @@ def section_info_save(chapter, section_list):
 
     for section in section_list:
         data = Section(id=None,
-                       name=section,
+                       name=section[:200],
                        chapter=chapter
                     )
         data.save()
@@ -16,7 +16,7 @@ def chapter_info_save(course, chapter_list):
     
     for chapter in chapter_list:        
         data = Chapter(id=None,
-                       name=chapter["chapter"],
+                       name=chapter["chapter"][:200],
                        course=course
                     )
         data.save()
@@ -26,7 +26,7 @@ def chapter_info_save(course, chapter_list):
 
 
 # 강의 정보 저장 
-def course_info_save(courses, site):
+def course_info_save(courses, site_):
     
     for course in courses:
         # data unpacking
@@ -37,12 +37,12 @@ def course_info_save(courses, site):
             crs = Course.objects.get(course_link=course["course_link"])
         except Exception:
             data = Course(id=None,
-                          title=course["title"], 
+                          title=course["title"][:200], 
                           thumbnail_link=course["thumbnail_link"], 
                           description=course["description"], 
-                          instructor=course["instructor"], 
+                          instructor=course["instructor"][:100], 
                           course_link=course["course_link"], 
-                          site=site
+                          site=site_
                         )
             data.save()
         

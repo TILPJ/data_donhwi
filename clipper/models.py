@@ -10,7 +10,7 @@ class Site(models.Model):
 
 class Course(models.Model):
     title = models.CharField(max_length=200)
-    thumbnail_link = models.URLField(null=True)
+    thumbnail_link = models.URLField(max_length=500, null=True)
     description = models.TextField(null=True)
     instructor = models.CharField(max_length=100, null=True)
     course_link = models.URLField()

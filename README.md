@@ -71,6 +71,15 @@ DataError: value too long for type character varying(200)
 - inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
 - nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
 
-
+---
+# 변경 사항(느릿느릿 2021-06-16)
+- 유데미의 thumbnail link는 길이가 디폴트값 200을 넘는게 많다. **urlfield의 max_length=500 으로 변경**하고 makemigrations, migrate.  
+- 유데미는 영어강의도 수집했다. (페이지10 이하로만)
+- 유데미 개발 카테고리 이외에 IT, 디자인, 음악 등 컴퓨터 프로그램 관련 강의를 중심으로 추가해 봤다.
+- get_soup_from_page 메서드에 화면 스크롤 액션을 추가함.(유데미 강의 목록의 썸네일 이미지 링크를 온전히 페이지에 렌더링시키기 위함.)
+- 한 페이지당 크롤링 소요 시간은 WAIT * 2 이상이며 한 강의당 1.0625 페이지이므로 강의 1000개를 한 번에 스크래이핑 하는데 소요되는 시간은 최소 WAIT*2125 = 10625초 = 177분 = 3시간 이다.
+- 병렬 스크래이핑 구현을 고민해봐야 할듯.
+---
 # References
 - Xpath cheatsheet : https://devhints.io/xpath#indexing
+- 장고 모델 URLField : https://docs.djangoproject.com/en/3.2/ref/models/fields/

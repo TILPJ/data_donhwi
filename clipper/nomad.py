@@ -161,5 +161,3 @@ def get_courses():
     courses_info = extract_courses(cards)
 
     return courses_info
-
-data = get_courses()
