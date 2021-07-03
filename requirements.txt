@@ -20,6 +20,7 @@ requests
 lxml
 beautifulsoup4==4.6.0
 scrapy
+rq
 
 # selenium related packages
 selenium

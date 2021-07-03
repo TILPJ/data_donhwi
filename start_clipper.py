@@ -13,6 +13,7 @@ from clipper.course_save import save as course_save
 from clipper.inflearn import get_courses as get_inflearn_courses
 from clipper.nomad import get_courses as get_nomad_courses
 from clipper.udemy import get_courses as get_udemy_courses
+from clipper.coloso import get_courses as get_coloso_courses
 
 ### only for test ###
 # from clipper.tests import site, data
@@ -43,6 +44,10 @@ if __name__ == '__main__':
         # udemy 데이터 저장
         udemy_courses = get_udemy_courses()
         course_save(udemy_courses, "udemy")
+    elif re.match("coloso", args.name):
+        # coloso 데이터 저장
+        coloso_courses = get_coloso_courses()
+        course_save(coloso_courses, "coloso")
 
     else:
         print("-n <강의 사이트 이름>")

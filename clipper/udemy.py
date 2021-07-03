@@ -19,9 +19,9 @@ BASE_URL = "https://www.udemy.com"
 # d. 음악 - 음악 소프트웨어
 CATEGORIES = {
     "개발": "/ko/courses/development",
-    "IT 및 소프트웨어": "/ko/courses/it-and-software",
-    "디자인": "/ko/courses/design",
-    "음악 소프트웨어": "/ko/courses/music/music-software"    
+    # "IT 및 소프트웨어": "/ko/courses/it-and-software",
+    # "디자인": "/ko/courses/design",
+    # "음악 소프트웨어": "/ko/courses/music/music-software"    
 }
 
 ## 검색조건식 적용 순서
@@ -29,7 +29,7 @@ CATEGORIES = {
 # 2. 영어 + 가장 인기 있는 + 평가>4.5
 KEYS = [
     ("?lang=ko", "&sort=popularity"),
-    ("?lang=en", "&rating=4.5&sort=popularity")
+    # ("?lang=en", "&rating=4.5&sort=popularity")
     ]
 
 WAIT = 5 # seconds
@@ -68,7 +68,7 @@ def get_soup_from_page(url, chrome_options, target_xpath='/html', button_xpath=N
 
     # 웹드라이버 세션을 실행하는 동안 본격적인 스크래이핑 작업을 위해
     # 웹페이지의 모든 DOM들이 들어가도록 soup 인스턴스를 생성한다.
-    with webdriver.Chrome(options=set_chrome_options()) as browser:
+    with webdriver.Chrome(options=chrome_options) as browser:
         
         browser.implicitly_wait(WAIT)        
         browser.get(url)
