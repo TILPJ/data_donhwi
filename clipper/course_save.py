@@ -5,7 +5,7 @@ def section_info_save(chapter, section_list):
 
     for section in section_list:
         data = Section(id=None,
-                       name=section[:200],
+                       name=section[:500],
                        chapter=chapter
                     )
         data.save()
@@ -16,7 +16,7 @@ def chapter_info_save(course, chapter_list):
     
     for chapter in chapter_list:        
         data = Chapter(id=None,
-                       name=chapter["chapter"][:200],
+                       name=chapter["chapter"][:500],
                        course=course
                     )
         data.save()
@@ -37,10 +37,10 @@ def course_info_save(courses, site_):
             crs = Course.objects.get(course_link=course["course_link"])
         except Exception:
             data = Course(id=None,
-                          title=course["title"][:200], 
+                          title=course["title"][:500], 
                           thumbnail_link=course["thumbnail_link"], 
                           description=course["description"], 
-                          instructor=course["instructor"][:100], 
+                          instructor=course["instructor"][:300], 
                           course_link=course["course_link"], 
                           site=site_
                         )

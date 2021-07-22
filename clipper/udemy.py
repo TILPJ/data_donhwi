@@ -8,6 +8,9 @@ from selenium.webdriver.common.by import By
 import time
 import re
 
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+
 ### constants ###
 
 BASE_URL = "https://www.udemy.com"
@@ -19,9 +22,9 @@ BASE_URL = "https://www.udemy.com"
 # d. 음악 - 음악 소프트웨어
 CATEGORIES = {
     "개발": "/ko/courses/development",
-    # "IT 및 소프트웨어": "/ko/courses/it-and-software",
-    # "디자인": "/ko/courses/design",
-    # "음악 소프트웨어": "/ko/courses/music/music-software"    
+    "IT 및 소프트웨어": "/ko/courses/it-and-software",
+    "디자인": "/ko/courses/design",
+    "음악 소프트웨어": "/ko/courses/music/music-software"    
 }
 
 ## 검색조건식 적용 순서
@@ -29,11 +32,11 @@ CATEGORIES = {
 # 2. 영어 + 가장 인기 있는 + 평가>4.5
 KEYS = [
     ("?lang=ko", "&sort=popularity"),
-    # ("?lang=en", "&rating=4.5&sort=popularity")
+    ("?lang=en", "&rating=4.5&sort=popularity")
     ]
 
-WAIT = 5 # seconds
-
+WAIT = 10 # seconds
+TIMES = 5 # 시도 횟수
 
 # chromedriver options
 def set_chrome_options() -> None:
@@ -122,7 +125,14 @@ def get_soup_from_page(url, chrome_options, target_xpath='/html', button_xpath=N
         # browser 세션을 종료하고 브라우저를 닫는다.    
     return soup
 
-
+def url_exists(url):
+    response = ''
+    try:
+        URLValidator(url)
+        response = requests.get(url)
+    except Exception as e:
+        print(e)
+    return response
 
 def extract_course(card):
 
@@ -146,6 +156,9 @@ def extract_course(card):
 
     course_link = card["href"]
     course_link = urljoin(BASE_URL, course_link)
+
+    # url check
+    assert url_exists(course_link)
 
     chapter_list = extract_chapter_list(course_link)
 
@@ -177,9 +190,17 @@ def extract_chapter_list(link):
     chapter_list = []
     
     target_xpath = '//div[@data-purpose="course-curriculum"]'
+    # 모든 섹션 확장 button_xpath
     button_xpath = '//button[@data-purpose="expand-toggle"]'
-    soup = get_soup_from_page(link, chrome_options, target_xpath, button_xpath)
-    
+    # 최대 TIMES회 시도
+    for i in range(TIMES):
+        try:
+            soup = get_soup_from_page(link, chrome_options, target_xpath, button_xpath)
+        except Exception:
+            print("아무내용없이 저장됨")
+            soup = None
+        if soup:
+            break
     chapters = soup.find_all("div", class_=re.compile("section--panel"))
     for chapter in chapters:
         section_list = []
@@ -203,6 +224,9 @@ def get_courses():
     # 스크래이핑 시작 페이지 url 결정하기      
     for _, cat in CATEGORIES.items():
         category_url = urljoin(BASE_URL, cat)
+        # url check
+        assert url_exists(category_url)
+
         for key in KEYS: 
             # 페이지 번호, 최대 페이지번호, 강의 갯수를 초기화한다.
             page = 0
@@ -222,8 +246,15 @@ def get_courses():
                 # 이제 soup로 본격적인 스크래이핑 작업에 들어간다.
                 # 원하는 정보가 모두 담긴 최소외각의 xpath는 다음과 같다.
                 target_xpath = '//div[contains(@class,"course-directory--container")]'            
-                soup = get_soup_from_page(url, chrome_options, target_xpath)
-
+                # TIMES회 시도
+                for i in range(TIMES):
+                    try:
+                        soup = get_soup_from_page(url, chrome_options, target_xpath)
+                    except Exception:
+                        print("아무내용없이 저장됨")
+                        soup = None
+                    if soup:
+                        break
                 # 먼저 강의 수에 따라 페이지가 나뉠 수 있으므로 처음 한 번만 체크하고 기록한다.
                 if page == 0:
                     page += 1   
