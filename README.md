@@ -70,3 +70,7 @@ DataError: value too long for type character varying(200)
 # 변경 사항(느릿느릿 2021-06-14)
 - inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
 - nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
+
+# 변경 사항(donhwi 2021-07-22)
+- clipper>models.py 
+- "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
