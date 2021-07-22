@@ -93,13 +93,13 @@ DataError: value too long for type character varying(200)
 - clipper>models.py
 - "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
 
+---
+
 # 변경 사항(느릿느릿 2021-07-22)
 - course_save.py를 models 의 max_length설정에 맞게 조정
+
+---
 # References
 - Xpath cheatsheet : https://devhints.io/xpath#indexing
 - 장고 모델 URLField : https://docs.djangoproject.com/en/3.2/ref/models/fields/
 =======
-# 변경 사항(donhwi 2021-07-22)
-- clipper>models.py 
-- "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
->>>>>>> a898e424878acd98a57d6a3a8424152fd731008a
