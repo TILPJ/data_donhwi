@@ -13,7 +13,7 @@ class Course(models.Model):
     thumbnail_link = models.URLField(max_length=500, null=True)
     description = models.TextField(null=True)
     instructor = models.CharField(max_length=300, null=True)
-    course_link = models.URLField()
+    course_link = models.URLField(max_length=500)
     site = models.ForeignKey(Site, on_delete=models.CASCADE) # add 
 
     def __str__(self):
