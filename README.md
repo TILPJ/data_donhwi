@@ -88,7 +88,12 @@ DataError: value too long for type character varying(200)
 - ubuntu의 cron기능을 활용하면 정기적인 업데이트가 가능하지만, 데이터 스크래이핑할 때 잦은 오류가 발생하므로 자동화를 제대로 구현하기가 쉽지 않다. 
 - 이후로 새로운 도커 셋업을 할 예정으로 requirements.txt를 재확인할 것.
 ---
+# 변경 사항(donhwi 2021-07-22)
+- clipper>models.py
+- "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
 
+# 변경 사항(느릿느릿 2021-07-22)
+- course_save.py를 models 의 max_length설정에 맞게 조정
 # References
 - Xpath cheatsheet : https://devhints.io/xpath#indexing
 - 장고 모델 URLField : https://docs.djangoproject.com/en/3.2/ref/models/fields/
