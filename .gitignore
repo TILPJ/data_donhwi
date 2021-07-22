@@ -142,3 +142,14 @@ cython_debug/
 
 # IDE
 .vscode
+
+# docker 
+docker-compose.yml
+Dockerfile
+
+# database
+/data
+
+# trial or test files
+*.ipynb
+*.png

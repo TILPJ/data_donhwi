@@ -12,6 +12,15 @@ django.setup()
 from clipper.course_save import save as course_save
 from clipper.inflearn import get_courses as get_inflearn_courses
 from clipper.nomad import get_courses as get_nomad_courses
+from clipper.udemy import get_courses as get_udemy_courses
+from clipper.coloso import get_courses as get_coloso_courses
+
+### only for test ###
+# from clipper.tests import site, data
+# from clipper.course_save import course_info_save
+# course_info_save(data, site)
+######################
+
 
 if __name__ == '__main__':
     # args로 -n <사이트이름> 과 옵션 -p <page> 을 받아 분기시켜 저장을 실행한다.
@@ -31,6 +40,14 @@ if __name__ == '__main__':
         # 노마드코더 데이터 저장
         nomad_courses = get_nomad_courses()
         course_save(nomad_courses, "nomadcoders")
+    elif re.match("udemy", args.name):
+        # udemy 데이터 저장
+        udemy_courses = get_udemy_courses()
+        course_save(udemy_courses, "udemy")
+    elif re.match("coloso", args.name):
+        # coloso 데이터 저장
+        coloso_courses = get_coloso_courses()
+        course_save(coloso_courses, "coloso")
 
     else:
         print("-n <강의 사이트 이름>")

@@ -71,6 +71,35 @@ DataError: value too long for type character varying(200)
 - inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
 - nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
 
+<<<<<<< HEAD
+---
+# 변경 사항(느릿느릿 2021-06-16)
+- 유데미의 thumbnail link는 길이가 디폴트값 200을 넘는게 많다. **urlfield의 max_length=500 으로 변경**하고 makemigrations, migrate.  
+- 유데미는 영어강의도 수집했다. (페이지10 이하로만)
+- 유데미 개발 카테고리 이외에 IT, 디자인, 음악 등 컴퓨터 프로그램 관련 강의를 중심으로 추가해 봤다.
+- get_soup_from_page 메서드에 화면 스크롤 액션을 추가함.(유데미 강의 목록의 썸네일 이미지 링크를 온전히 페이지에 렌더링시키기 위함.)
+- 한 페이지당 크롤링 소요 시간은 WAIT * 2 이상이며 한 강의당 1.0625 페이지이므로 강의 1000개를 한 번에 스크래이핑 하는데 소요되는 시간은 최소 WAIT*2125 = 10625초 = 177분 = 3시간 이다.
+- 병렬 스크래이핑 구현을 고민해봐야 할듯.
+---
+
+# 변경 사항(느릿느릿 2021-07-02)
+- coloso의 카테고리는 총 10 개인데 db에 저장하는데 성공하려면 각각의 카테고리별로 데이터 추출 후 따로 저장하는 편이 낫다. 한꺼번에 데이터를 뽑아 저장하는데 성공할 확률은 거의 없다. 유데미도 마찬가지.
+- 카테고리별 강의 카드 리스트 배치방법이 두 가지로 나뉘고 그에 따라 target_xpath도 두 가지 경로를 union한 경로를 사용했다.
+- get_soup_from_page 메서드에 마우스 오버 액션 기능을 추가하여 카테고리 링크를 추출하는데 활용했다.
+- ubuntu의 cron기능을 활용하면 정기적인 업데이트가 가능하지만, 데이터 스크래이핑할 때 잦은 오류가 발생하므로 자동화를 제대로 구현하기가 쉽지 않다. 
+- 이후로 새로운 도커 셋업을 할 예정으로 requirements.txt를 재확인할 것.
+---
 # 변경 사항(donhwi 2021-07-22)
-- clipper>models.py 
+- clipper>models.py
 - "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
+
+---
+
+# 변경 사항(느릿느릿 2021-07-22)
+- course_save.py를 models 의 max_length설정에 맞게 조정
+
+---
+# References
+- Xpath cheatsheet : https://devhints.io/xpath#indexing
+- 장고 모델 URLField : https://docs.djangoproject.com/en/3.2/ref/models/fields/
+=======

@@ -7,14 +7,9 @@
 4. 분석한다.
 https://stackoverflow.com/questions/62165635/how-to-scrape-data-from-flexbox-element-container-with-python-and-beautiful-soup
 """
-import requests
-from requests.compat import urljoin, quote_plus
+from requests.compat import urljoin
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-import time
 import re
 
 # constants
@@ -70,7 +65,8 @@ def get_soup_from_page(url, chrome_options, xpath=None):
                 print("See all 버튼이 없습니다.")
         
         # <html> 태그 내용물을 얻는다.
-        html = browser.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
+        # html = browser.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
+        html = browser.page_source
 
         # soup로 만들되 가급적 'lxml' 파서를 이용한다.
         try:
@@ -165,5 +161,3 @@ def get_courses():
     courses_info = extract_courses(cards)
 
     return courses_info
-
-data = get_courses()
