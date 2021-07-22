@@ -2,17 +2,17 @@ from django.db import models
 
 # 추가 
 class Site(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=300)
 
     def __str__(self):
         return self.name
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=200)
-    thumbnail_link = models.URLField(null=True)
+    title = models.CharField(max_length=500)
+    thumbnail_link = models.URLField(max_length=500, null=True)
     description = models.TextField(null=True)
-    instructor = models.CharField(max_length=100, null=True)
+    instructor = models.CharField(max_length=300, null=True)
     course_link = models.URLField()
     site = models.ForeignKey(Site, on_delete=models.CASCADE) # add 
 
@@ -22,7 +22,7 @@ class Course(models.Model):
 
 class Chapter(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)    
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
@@ -30,7 +30,7 @@ class Chapter(models.Model):
 
 class Section(models.Model):
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=500)
 
     def __str__(self):
         return self.name
