@@ -71,6 +71,7 @@ DataError: value too long for type character varying(200)
 - inflearn_save.py -> course_save.py 로 공용 세이버로 만듦
 - nomadcoders courses 카테고리 저장 확인 `python start_clipper.py -n nomad`
 
+<<<<<<< HEAD
 ---
 # 변경 사항(느릿느릿 2021-06-16)
 - 유데미의 thumbnail link는 길이가 디폴트값 200을 넘는게 많다. **urlfield의 max_length=500 으로 변경**하고 makemigrations, migrate.  
@@ -97,3 +98,8 @@ DataError: value too long for type character varying(200)
 # References
 - Xpath cheatsheet : https://devhints.io/xpath#indexing
 - 장고 모델 URLField : https://docs.djangoproject.com/en/3.2/ref/models/fields/
+=======
+# 변경 사항(donhwi 2021-07-22)
+- clipper>models.py 
+- "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
+>>>>>>> a898e424878acd98a57d6a3a8424152fd731008a
