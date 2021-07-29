@@ -74,3 +74,13 @@ DataError: value too long for type character varying(200)
 # 변경 사항(donhwi 2021-07-22)
 - clipper>models.py 
 - "django.db.utils.DataError: value too long for type character varying(200)" 오류가 발생하여 전체적으로 max_length의 길이를 늘렸습니다
+
+# 변경 사항(donhwi 2021-07-29)
+1. 서버/개발환경을 위한 settings 분리
+- 이전 : conf>settings.py 
+- 이후 : conf>settings>base.py, local.py, prod.py
+- settings 환경 분리에 따른 개발 환경에서의 서버 실행 방법 : python manage.py runserver --settings=conf.settings.local
+
+2. .env 데이터베이스 관련 환경 변수명 수정, conf.settings.local.py 파일에서 DATABASES 설정 부분 환경 변수명 변경됨
+- 이전 : DATABASE_ENGINE, DATABASE_NAME 등
+- 이후 : LOCAL_DATABASE_ENGINE, LOCAL_DATABASE_NAME 등
