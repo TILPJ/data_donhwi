@@ -16,6 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 import re
+import os
 
 # constants
 BASE_URL = "https://nomadcoders.co/"
@@ -33,6 +34,8 @@ def set_chrome_options() -> None:
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+
     chrome_prefs = {}
     chrome_options.experimental_options["prefs"] = chrome_prefs
     chrome_prefs["profile.default_content_settings"] = {"images": 2}
@@ -53,7 +56,7 @@ def get_soup_from_page(url, chrome_options, xpath=None):
 
     # 웹드라이버 세션을 실행하는 동안 본격적인 스크래이핑 작업을 위해
     # 웹페이지의 모든 DOM들이 들어가도록 soup 인스턴스를 생성한다.
-    with webdriver.Chrome(options=set_chrome_options()) as browser:
+    with webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=set_chrome_options()) as browser:
         
         browser.get(url)
         max_window(browser)
